@@ -1,6 +1,8 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import '../css/tetris.css';
+
 
 // block size
 const C_BLOCK_SIZE = 30;
