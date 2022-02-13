@@ -33,6 +33,22 @@ let tetromino_x = 0;
 let field = [];
 
 
+const can_next_move = (move_x, move_y) => {
+  for (let y = 0; y < C_TETRO_SIZE; y++) {
+    for (let x = 0; x < C_TETRO_SIZE; x++) {
+      let next_y = y + move_y + tetromino_y;
+      let next_x = x + move_x + tetromino_x;
+      if (tetromino[y][x]) {
+        if (next_y < 0 || next_x < 0 || next_y >= C_FIELD_ROW || next_x >= C_FIELD_COL
+          || field[next_y][next_x]) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
 const drow_block = (x, y) => {
   const print_x = x * C_BLOCK_SIZE;
   const print_y = y * C_BLOCK_SIZE;
@@ -102,16 +118,16 @@ document.onkeydown = (e) => {
   if (!codes.includes(e.code)) return;
   switch (e.code) {
     case C_KEYDOWN_ARROWLEFT:
-      tetromino_x--;
+      if (can_next_move(-1, 0)) tetromino_x--;
       break;
     case C_KEYDOWN_ARROWUP:
-      tetromino_y--;
+      if (can_next_move(0, -1)) tetromino_y--;
       break;
     case C_KEYDOWN_ARROWRIGHT:
-      tetromino_x++;
+      if (can_next_move(1, 0)) tetromino_x++;
       break;
     case C_KEYDOWN_ARROWDOWN:
-      tetromino_y++;
+      if (can_next_move(0, 1)) tetromino_y++;
       break;
     case C_KEYDOWN_SPACE:
       break;
