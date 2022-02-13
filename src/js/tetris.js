@@ -14,7 +14,7 @@ const C_CANV_HEIGHT = C_BLOCK_SIZE * C_FIELD_ROW;
 // canvas style
 const C_CANV_STYLE_BORDER = "2px solid #000000";
 // tetro size
-const C_TETRO_SIZE = 4;
+const C_TETROMINO_SIZE = 4;
 // onkeydown codes
 const C_KEYDOWN_ARROWLEFT = "ArrowLeft";
 const C_KEYDOWN_ARROWUP = "ArrowUp";
@@ -37,8 +37,8 @@ let field = [];
 
 
 const fix_tetromino = () => {
-  for (let y = 0; y < C_TETRO_SIZE; y++) {
-    for (let x = 0; x < C_TETRO_SIZE; x++) {
+  for (let y = 0; y < C_TETROMINO_SIZE; y++) {
+    for (let x = 0; x < C_TETROMINO_SIZE; x++) {
       if (tetromino[y][x]) field[y + tetromino_y][x + tetromino_x] = 1;
     }
   }
@@ -58,10 +58,10 @@ const drop_tetromino = () => {
 
 const rotate = () => {
   let new_tetromino = [];
-  for (let y = 0; y < C_TETRO_SIZE; y++) {
+  for (let y = 0; y < C_TETROMINO_SIZE; y++) {
     new_tetromino[y] = [];
-    for (let x = 0; x < C_TETRO_SIZE; x++) {
-      new_tetromino[y][x] = tetromino[C_TETRO_SIZE - x - 1][y];
+    for (let x = 0; x < C_TETROMINO_SIZE; x++) {
+      new_tetromino[y][x] = tetromino[C_TETROMINO_SIZE - x - 1][y];
     }
   }
   return new_tetromino;
@@ -69,8 +69,8 @@ const rotate = () => {
 
 const can_next_move = (move_x, move_y, check_tetromino) => {
   if (check_tetromino == undefined) check_tetromino = tetromino;
-  for (let y = 0; y < C_TETRO_SIZE; y++) {
-    for (let x = 0; x < C_TETRO_SIZE; x++) {
+  for (let y = 0; y < C_TETROMINO_SIZE; y++) {
+    for (let x = 0; x < C_TETROMINO_SIZE; x++) {
       let next_y = y + move_y + tetromino_y;
       let next_x = x + move_x + tetromino_x;
       if (check_tetromino[y][x]) {
@@ -94,8 +94,8 @@ const drow_block = (x, y) => {
 }
 
 const drow_tetromino = () => {
-  for (let y = 0; y < C_TETRO_SIZE; y++) {
-    for (let x = 0; x < C_TETRO_SIZE; x++) {
+  for (let y = 0; y < C_TETROMINO_SIZE; y++) {
+    for (let x = 0; x < C_TETROMINO_SIZE; x++) {
       if (tetromino[y][x]) drow_block(x + tetromino_x, y + tetromino_y);
     }
   }
