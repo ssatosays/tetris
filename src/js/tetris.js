@@ -21,7 +21,8 @@ const C_KEYDOWN_ARROWUP = "ArrowUp";
 const C_KEYDOWN_ARROWRIGHT = "ArrowRight";
 const C_KEYDOWN_ARROWDOWN = "ArrowDown";
 const C_KEYDOWN_SPACE = "Space";
-
+// drop speed
+const C_DROP_SPEED = 600;
 
 // canvas
 let canv;
@@ -34,6 +35,26 @@ let tetromino_x = 0;
 // field
 let field = [];
 
+
+const fix_tetromino = () => {
+  for (let y = 0; y < C_TETRO_SIZE; y++) {
+    for (let x = 0; x < C_TETRO_SIZE; x++) {
+      if (tetromino[y][x]) field[y + tetromino_y][x + tetromino_x] = 1;
+    }
+  }
+}
+
+const drop_tetromino = () => {
+  if (can_next_move(0, 1)) {
+    tetromino_y++;
+    drow_field();
+    drow_tetromino();
+  } else {
+    fix_tetromino();
+    tetromino_y = 0;
+    tetromino_x = 0;
+  }
+}
 
 const rotate = () => {
   let new_tetromino = [];
@@ -135,7 +156,7 @@ document.onkeydown = (e) => {
       if (can_next_move(-1, 0)) tetromino_x--;
       break;
     case C_KEYDOWN_ARROWUP:
-      if (can_next_move(0, -1)) tetromino_y--;
+      // if (can_next_move(0, -1)) tetromino_y--;
       break;
     case C_KEYDOWN_ARROWRIGHT:
       if (can_next_move(1, 0)) tetromino_x++;
@@ -154,4 +175,6 @@ document.onkeydown = (e) => {
 
 window.onload = () => {
   init();
+  setInterval(drop_tetromino, C_DROP_SPEED);
+
 }
