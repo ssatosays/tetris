@@ -33,12 +33,24 @@ let tetromino_x = 0;
 let field = [];
 
 
-const can_next_move = (move_x, move_y) => {
+const rotate = () => {
+  let new_tetromino = [];
+  for (let y = 0; y < C_TETRO_SIZE; y++) {
+    new_tetromino[y] = [];
+    for (let x = 0; x < C_TETRO_SIZE; x++) {
+      new_tetromino[y][x] = tetromino[C_TETRO_SIZE - x - 1][y];
+    }
+  }
+  return new_tetromino;
+}
+
+const can_next_move = (move_x, move_y, check_tetromino) => {
+  if (check_tetromino == undefined) check_tetromino = tetromino;
   for (let y = 0; y < C_TETRO_SIZE; y++) {
     for (let x = 0; x < C_TETRO_SIZE; x++) {
       let next_y = y + move_y + tetromino_y;
       let next_x = x + move_x + tetromino_x;
-      if (tetromino[y][x]) {
+      if (check_tetromino[y][x]) {
         if (next_y < 0 || next_x < 0 || next_y >= C_FIELD_ROW || next_x >= C_FIELD_COL
           || field[next_y][next_x]) {
           return false;
@@ -130,6 +142,8 @@ document.onkeydown = (e) => {
       if (can_next_move(0, 1)) tetromino_y++;
       break;
     case C_KEYDOWN_SPACE:
+      let new_tetromino = rotate();
+      if (can_next_move(0, 0, new_tetromino)) tetromino = new_tetromino;
       break;
   }
   drow_field();
