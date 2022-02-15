@@ -91,10 +91,35 @@ let tetromino_x = C_TETROMINO_X;
 let tetromino_color_num;
 // field
 let field = [];
-
+// game over
+let game_over = false
+// line count sum
+let line_count_sum = 0;
 
 const get_random_num = (min, max) => {
   return Math.floor((Math.random() * (max + 1 - min)) + min);
+}
+
+const crash_field_line = () => {
+  let line_count = 0;
+  for (let y = 0; y < C_FIELD_ROW; y++) {
+    let is_full = true;
+    for (let x = 0; x < C_FIELD_COL; x++) {
+      if (!field[y][x]) {
+        is_full = false;
+        break;
+      }
+    }
+    if (is_full) {
+      line_count++;
+      for (let ny = y; ny > 0; ny--) {
+        for (let x = 0; x < C_FIELD_COL; x++) {
+          field[ny][x] = field[ny -1][x];
+        }
+      }
+    }
+  }
+  line_count_sum += line_count;
 }
 
 const fix_tetromino = () => {
@@ -106,17 +131,24 @@ const fix_tetromino = () => {
 }
 
 const drop_tetromino = () => {
+  if (game_over) return;
   if (can_next_move(0, 1)) {
     tetromino_y++;
   } else {
     fix_tetromino();
+    crash_field_line();
     tetromino = get_tetromino();
     tetromino_color_num = get_tetromino_color_num();
     tetromino_y = C_TETROMINO_Y;
     tetromino_x = C_TETROMINO_X;
+    if (!can_next_move(0, 0)) game_over = true;
   }
-  drow_field();
-  drow_tetromino();
+  if (game_over) {
+    alert('GAME OVER');
+  } else {
+    drow_field();
+    drow_tetromino();
+  }
 }
 
 const rotate = () => {
@@ -201,10 +233,10 @@ const init = () => {
   tetromino = get_tetromino();
   tetromino_color_num = get_tetromino_color_num();
   field = get_initial_field(C_FIELD_ROW, C_FIELD_COL);
-  field[5][8] = 1;
-  field[6][8] = 2;
-  field[7][8] = 3;
-  field[8][8] = 4;
+  // field[5][8] = 1;
+  // field[6][8] = 2;
+  // field[7][8] = 3;
+  // field[8][8] = 4;
   drow_field();
   drow_tetromino();
 }
@@ -215,6 +247,7 @@ document.onkeydown = (e) => {
     C_KEYDOWN_ARROWDOWN, C_KEYDOWN_SPACE
   ];
   if (!codes.includes(e.code)) return;
+  if (game_over) return;
   switch (e.code) {
     case C_KEYDOWN_ARROWLEFT:
       if (can_next_move(-1, 0)) tetromino_x--;
