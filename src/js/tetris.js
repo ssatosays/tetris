@@ -108,8 +108,6 @@ const fix_tetromino = () => {
 const drop_tetromino = () => {
   if (can_next_move(0, 1)) {
     tetromino_y++;
-    drow_field();
-    drow_tetromino();
   } else {
     fix_tetromino();
     tetromino = get_tetromino();
@@ -117,6 +115,8 @@ const drop_tetromino = () => {
     tetromino_y = C_TETROMINO_Y;
     tetromino_x = C_TETROMINO_X;
   }
+  drow_field();
+  drow_tetromino();
 }
 
 const rotate = () => {
@@ -185,7 +185,7 @@ const get_initial_field = (row, col) => {
 }
 
 const get_tetromino = () => {
-  return C_TETROMINO_TYPES[get_random_num(0, C_TETROMINO_TYPES.length - 1)];
+  return C_TETROMINO_TYPES[get_random_num(0, (C_TETROMINO_TYPES.length - 1))];
 }
 
 const get_tetromino_color_num = () => {
