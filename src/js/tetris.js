@@ -233,10 +233,6 @@ const init = () => {
   tetromino = get_tetromino();
   tetromino_color_num = get_tetromino_color_num();
   field = get_initial_field(C_FIELD_ROW, C_FIELD_COL);
-  // field[5][8] = 1;
-  // field[6][8] = 2;
-  // field[7][8] = 3;
-  // field[8][8] = 4;
   drow_field();
   drow_tetromino();
 }
